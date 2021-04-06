@@ -1,0 +1,12 @@
+{
+    "publishPath-win64": "h:\\dev.net\\_demos\\CoreClrHostDemoSolution\\_win10_deploy",
+    "publishPath": "../../../../../ManagedLibrary/EmptyApp/bin/Release/net5.0/linux-x64",
+    "publishPath1": "../../../../",
+    "libraryFile": "ManagedDataLibrary.dll",
+    "assemblyName": "ManagedDataLibrary",
+    "className": "ManagedDataLibrary.SimpleClass",
+    "methodName": "Print",
+    "message": "Hello, world",
+    "boolValueTrue": true,
+    "boolValueFalse": false
+}
