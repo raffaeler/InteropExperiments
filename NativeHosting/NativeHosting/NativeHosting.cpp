@@ -63,6 +63,8 @@ void invokeQuery(const xfunction& func, const string& xml,
 
 int main()
 {
+	auto sep = std::filesystem::path::preferred_separator;
+
 	auto cfg = xconfig::load("config.json", true);
 	auto pubPath = XFilesystem::make_absolutepath(cfg.get("publishPath"));
 	auto libraryFile = cfg.get("libraryFile");
@@ -95,7 +97,7 @@ int main()
 
 		invokeQuery(funcs["MakeQuerySingle"], xml, "year", "1987", "title", [](const string& result)
 			{
-				cout << ".NET Query result is «" << result << "»" << endl;
+				cout << ".NET Query result is \"" << result << "\"" << endl;
 			});
 	}
 	catch (const runtime_error& err)

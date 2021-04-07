@@ -1,5 +1,6 @@
 {
-    "publishPath-win64": "h:\\dev.net\\_demos\\CoreClrHostDemoSolution\\_win10_deploy",
+    "publishPath-win64": "../../../../../ManagedLibrary/EmptyApp/bin/Release/net5.0/win-x64",
+    "publishPath-linux-x64": "../../../../../ManagedLibrary/EmptyApp/bin/Release/net5.0/linux-x64",
     "publishPath": "../../../../../ManagedLibrary/EmptyApp/bin/Release/net5.0/linux-x64",
     "libraryFile": "ManagedDataLibrary.dll",
 

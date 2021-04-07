@@ -26,10 +26,10 @@ namespace raf_tools
             {
                 std::filesystem::path res = std::filesystem::current_path();
                 res /= p;
-                return std::filesystem::canonical(res).generic_string();
+                return std::filesystem::canonical(res).string();
             }
 
-            return std::filesystem::canonical(p1).generic_string();
+            return std::filesystem::canonical(p1).string();
         }
 
         static path getExecutable()

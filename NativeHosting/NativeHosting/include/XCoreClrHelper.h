@@ -12,6 +12,7 @@
 #include <vector>
 #include <iostream>
 #include <memory>
+#include <filesystem>
 
 #include "XErrors.h"
 #include "XUtilities.h"
@@ -43,7 +44,7 @@ namespace raf_coreclr
 		std::string _pathSeparator;
 		std::string _pathSplitter;
 		std::string _coreclrdll;
-		std::string _publishingPath;
+		std::filesystem::path _publishingPath;
 		coreclr_initialize_ptr _initializeFunc;
 		coreclr_shutdown_ptr _shutdownFunc;
 		coreclr_shutdown_2_ptr _shutdown2Func;
@@ -119,15 +120,15 @@ namespace raf_coreclr
 		void Initialize()
 		{
 			_isMainAppDomainCreated = false;
-			auto fullCoreclrdll = _publishingPath + _coreclrdll;
-			_clrLibrary = std::make_unique<raf_tools::LibraryLoader>(fullCoreclrdll, true);	// true ==> never unload the dll from memory
+			auto fullCoreclrdll = _publishingPath / _coreclrdll;
+			_clrLibrary = std::make_unique<raf_tools::LibraryLoader>(fullCoreclrdll.string(), true);	// true ==> never unload the dll from memory
 			InitializeFuncPointers();
 		}
 
 	public:
 		std::string GetPublishingPath()
 		{
-			return _publishingPath;
+			return _publishingPath.string();
 		}
 
 		XCoreClrHelper(const std::string& publishingPath)
@@ -142,12 +143,7 @@ namespace raf_coreclr
 			_coreclrdll = "libcoreclr.so"s;
 #endif
 
-			_publishingPath = publishingPath;
-			if (!ends_with(_publishingPath, _pathSeparator))
-			{
-				_publishingPath += _pathSeparator;
-			}
-
+			_publishingPath = std::filesystem::canonical(path(publishingPath));
 			Initialize();
 		}
 
@@ -166,7 +162,7 @@ namespace raf_coreclr
 		void CreateAppDomain(const std::string& entryPointAssembly, const std::vector<std::string>& trustedPaths)
 		{
 			int res;
-			auto entryPointFullPathName = _publishingPath + entryPointAssembly;
+			auto entryPointFullPathName = std::filesystem::canonical(_publishingPath / entryPointAssembly).string();
 			//trustedPaths.push_back(entryPointFullPathName);
 			//for (const auto& assembly : trustedAssemblies)
 			//{
@@ -198,8 +194,9 @@ namespace raf_coreclr
 				"System.Globalization.Invariant",
 			};
 
+			string pubPath = _publishingPath.string();
 			const char* property_values[] = {
-				_publishingPath.c_str(),	// APPBASE (The base path of the application from which the exe and other assemblies will be loaded)
+				pubPath.c_str(),	// APPBASE (The base path of the application from which the exe and other assemblies will be loaded)
 				"",	// trusted.c_str(),		// TRUSTED_PLATFORM_ASSEMBLIES (The list of complete paths to each of the fully trusted assemblies)
 				trusted.c_str(), // _publishingPath.c_str(),			// APP_PATHS (The list of paths which will be probed by the assembly loader)
 
@@ -268,8 +265,6 @@ namespace raf_coreclr
 
 			return del;
 		}
-
-
 	};
 
 	// the .NET Framework typecode enumeration
