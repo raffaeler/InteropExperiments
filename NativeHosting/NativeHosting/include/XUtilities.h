@@ -12,6 +12,11 @@
 #include <limits.h>
 #include <stdlib.h>
 
+#if defined (WIN32) || defined (WIN64)
+#include <Windows.h>
+#endif
+
+
 namespace raf_tools
 {
     using namespace std::string_literals;
@@ -96,6 +101,27 @@ namespace raf_tools
             if (envValue == nullptr) return valfalse;
             if (envValue[0] == '1') return valtrue;
             return valfalse;
+        }
+
+
+        static void* marshalAlloc(size_t size)
+        {
+#if defined(WIN32) || defined(WIN64)
+            return CoTaskMemAlloc(size);
+#else
+            return std::malloc(size);
+#endif
+        }
+
+
+        static void marshalFree(void* ptr)
+        {
+#if defined(WIN32) || defined(WIN64)
+            CoTaskMemFree(ptr);
+#else
+            std::free(ptr);
+#endif
+
         }
 
     };

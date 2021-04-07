@@ -62,5 +62,25 @@ namespace raf_tools
             return getExecutablePath().string();
         }
 
+        static std::string load_text(const std::string& filename, bool locateInExeDirectory)
+        {
+            std::filesystem::path full;
+
+            if (locateInExeDirectory)
+            {
+                full = XFilesystem::getExecutablePath() /= filename;
+            }
+            else
+            {
+                full = filename;
+            }
+
+            std::ifstream stream(full);
+            std::string str((std::istreambuf_iterator<char>(stream)),
+                std::istreambuf_iterator<char>());
+
+            return str;
+        }
+
     };
 }

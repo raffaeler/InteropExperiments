@@ -5,8 +5,9 @@
 // This hosting code one is different from the official one
 // questions to Raffaele Rialdi @raffaeler
 
-//#define WIN64
 
+// The following #define is to use the secure CRT library defined in the C++ standard
+// Unfortunately the safe getenv is not available in Clang/Linux at the moment
 //#define __STDC_WANT_LIB_EXT1__ 1
 #include <string>
 #include <iostream>
@@ -14,6 +15,7 @@
 #include <future>
 #include <array>
 #include <filesystem>
+#include <functional>
 
 #include "include/xconfig.h"
 #include "include/appcontext.h"
@@ -31,39 +33,39 @@ using namespace raf_coreclr;
 std::unique_ptr<appcontext> appcontext::instance;
 std::string appcontext::pubPath;
 
-void makeCall(const xconfig& cfg)
+void invokePrint(const xfunction& func)
 {
 	auto context = appcontext::getInstance();
 	auto clr = context->clr;
 
-	//auto assemblyName = "DemoLibrary"s;
-	//auto className = "DemoLibrary.SimpleClass";
-	//auto methodName = "Print";
-	//auto message = u"Hello, world";
-
-	auto assemblyName = cfg.get("assemblyName");
-	auto className = cfg.get("className");
-	auto methodName = cfg.get("methodName");
-	auto msg = cfg.get("message");// XUtilities::ToU16(cfg.get("message"));
-	auto message = msg.c_str();
-
-	using DelProto = void(void*);
-	auto del = (DelProto*)clr->CreateDelegate(assemblyName, className, methodName);
-	del((void*)message);
+	using printPrototype = void(const char*);
+	auto printDelegate = (printPrototype*)clr->CreateDelegate(func.assemblyName, func.className, func.methodName);
+	printDelegate("Hello, world!");
 }
 
+
+void invokeQuery(const xfunction& func, const string& xml,
+	const string& predicateField, const string& predicateValue, const string& returnField,
+	std::function<void(std::string)> resultFunc)
+{
+	auto context = appcontext::getInstance();
+	auto clr = context->clr;
+
+	using queryPrototype = char*(const char*, const char*, const char*, const char*);
+	auto queryDelegate = (queryPrototype*)clr->CreateDelegate(func.assemblyName, func.className, func.methodName);
+
+	char* pRes = queryDelegate(xml.c_str(), predicateField.c_str(), predicateValue.c_str(), returnField.c_str());
+	resultFunc(pRes);
+
+	// free the allocation
+	XUtilities::marshalFree(pRes);
+}
 
 int main()
 {
 	auto cfg = xconfig::load("config.json", true);
-	auto lib = cfg.get("libraryFile");
 	auto pubPath = XFilesystem::make_absolutepath(cfg.get("publishPath"));
-	auto btrue = cfg.getBool("boolValueTrue");
-	auto bfalse = cfg.getBool("boolValueFalse");
-
-	//cout << lib << endl;
-	//cout << btrue << endl;
-	//cout << bfalse << endl;
+	auto libraryFile = cfg.get("libraryFile");
 
 	std::cout << "Executable          : " << XFilesystem::getExecutable() << endl;
 	std::cout << "Executable Directory: " << XFilesystem::getExecutableAsString() << endl;
@@ -75,6 +77,8 @@ int main()
 	//cfg.print();
 	//std::cout << "==============" << std::endl;
 
+	auto funcs = cfg.getFunctions();
+
 	appcontext::initialize(pubPath);
 	auto context = appcontext::getInstance();
 	auto clr = context->clr;
@@ -83,8 +87,16 @@ int main()
 	{
 		std::vector<std::string> trustedAssemblies;
 		trustedAssemblies.push_back(pubPath);
-		clr->CreateAppDomain(lib, trustedAssemblies);
-		makeCall(cfg);
+		clr->CreateAppDomain(libraryFile, trustedAssemblies);
+		invokePrint(funcs["PrintVoid"]);
+
+
+		auto xml = XFilesystem::load_text("cd.xml", true);
+
+		invokeQuery(funcs["MakeQuerySingle"], xml, "year", "1987", "title", [](const string& result)
+			{
+				cout << ".NET Query result is «" << result << "»" << endl;
+			});
 	}
 	catch (const runtime_error& err)
 	{

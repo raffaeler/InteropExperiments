@@ -5,6 +5,7 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <map>
 
 #include "Xfilesystem.h"
 #include "XUtilities.h"
@@ -12,6 +13,17 @@
 namespace raf_tools
 {
 	using json = nlohmann::json;
+	using namespace std;
+
+	class xfunction
+	{
+	public:
+		std::string name;	// familiar, unique name
+		//std::string libraryFile;	// loaded from .NET
+		std::string assemblyName;
+		std::string className;
+		std::string methodName;
+	};
 
 	class xconfig
 	{
@@ -64,6 +76,25 @@ namespace raf_tools
 		{
 			return _root[key].get<bool>();
 		}
+
+		map<std::string, xfunction> getFunctions()
+		{
+			map<std::string, xfunction> res;
+			auto funcs = _root["functions"s];
+			std::for_each(begin(funcs), end(funcs), [&res] (const json & item)
+			{
+				xfunction func;
+				func.name = item["name"].get<std::string>();
+				func.assemblyName = item["assemblyName"].get<std::string>();
+				func.className = item["className"].get<std::string>();
+				func.methodName = item["methodName"].get<std::string>();
+				
+				res[func.name] = func;
+			});
+
+			return res;
+		}
+
 
 		void print()
 		{

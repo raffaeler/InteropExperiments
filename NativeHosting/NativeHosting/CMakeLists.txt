@@ -29,3 +29,9 @@ add_custom_command(TARGET NativeHosting POST_BUILD              # Adds a post-bu
         $<TARGET_FILE_DIR:NativeHosting>)                       # <--this is out-file path
 
 
+add_custom_command(TARGET NativeHosting POST_BUILD              # Adds a post-build event to MyTest
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different               # which executes "cmake - E copy_if_different..."
+        "${PROJECT_SOURCE_DIR}/${PROJECT_NAME}/cd.xml"          # <--this is in-file
+        $<TARGET_FILE_DIR:NativeHosting>)                       # <--this is out-file path
+
+
