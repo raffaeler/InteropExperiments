@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+    <metadata>
+        <id>WinNativeUtilities_Debug</id>
+        <version>1.0.0</version>
+        <authors>Raf</authors>
+        <description>Some native helpers</description>
+        <dependencies>
+            <group targetFramework=".NETCoreApp3.0" />
+            <group targetFramework="UAP10.0" />
+            <group targetFramework=".NETFramework4.6" />
+            <group targetFramework="net5.0">
+                <dependency id="Microsoft.Windows.CsWinRT" version="1.2.1" exclude="Build,Analyzers" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <!--Support net46+, netcore3, net5, uap, c++ -->
+        <file src="..\x64\Debug\WinNativeUtilities\WinNativeUtilities.winmd" target="lib\netcoreapp3.0\WinNativeUtilities.winmd" />
+        <file src="..\x64\Debug\WinNativeUtilities\WinNativeUtilities.winmd" target="lib\uap10.0\WinNativeUtilities.winmd" />
+        <file src="..\x64\Debug\WinNativeUtilities\WinNativeUtilities.winmd" target="lib\net46\WinNativeUtilities.winmd" />
+        <file src="..\x64\Debug\WinNativeUtilities\WinNativeUtilities.dll" target="runtimes\win10-x64\native\WinNativeUtilities.dll" />
+        <file src="..\_build\x64\Debug\WinNativeUtilitiesProjection\bin\WinNativeUtilitiesProjection.dll" target="lib\net5.0\WinNativeUtilitiesProjection.dll" />
+    </files>
+</package>

@@ -19,14 +19,34 @@ void test_alarm()
     auto response2 = to_string(alarm.SendReceive(L"Hello Echo"));
     cout << response2 << endl;
 
-    auto token = alarm.Elapsed([](IInspectable const& ii, const ManagedComponent::AlarmEventArgs& s2)
-        {
-            auto alarm = ii.as<ManagedComponent::Alarm>();
+    //auto token = alarm.Elapsed([](IInspectable const& ii, const ManagedComponent::AlarmEventArgs& s2)
+    //    {
+    //        auto alarm = ii.as<ManagedComponent::Alarm>();
 
-            auto response2 = alarm.SendReceive(L"message within the event");
-            cout << to_string(s2.Message()) << endl;// << s2 << endl;
-            alarm.Close();
-        });
+    //        auto response2 = alarm.SendReceive(L"message within the event");
+    //        cout << to_string(s2.Message()) << endl;// << s2 << endl;
+    //        alarm.Close();
+    //    });
+
+    auto handler1 = ([](IInspectable const& ii, const ManagedComponent::AlarmEventArgs& s2)
+            {
+                auto sender = ii.as<ManagedComponent::Alarm>();
+
+                auto response2 = sender.SendReceive(L"message within the event");
+                cout << to_string(s2.Message()) << endl;// << s2 << endl;
+                sender.Close();
+            });
+    auto token1 = alarm.Elapsed(handler1);
+
+
+    //Windows::Foundation::TypedEventHandler<ManagedComponent::Alarm, ManagedComponent::AlarmEventArgs> handler2(
+    //    [](ManagedComponent::Alarm sender, ManagedComponent::AlarmEventArgs args)
+    //    {
+    //        auto response2 = sender.SendReceive(L"message within the event");
+    //        cout << to_string(args.Message()) << endl;// << s2 << endl;
+    //        sender.Close();
+    //    });
+    //auto token2 = alarm.Elapsed(handler2);
 
     TimeSpan ts = std::chrono::milliseconds{ 500 };
     alarm.Start(ts, L"Ping");

@@ -1,8 +1,10 @@
 use std::env;
 use std::fs;
+use windows::{Interface, Result};
 
 use bindings::{
     ManagedComponent::*,
+    Windows::Foundation::*,
 
     //windows::Result,
     //windows::ui::Colors,
@@ -51,6 +53,50 @@ fn main() -> windows::Result<()> {
     //alarm.Elapsed(handler)
     //let arg = AlarmEventArgs::new()?;
     //arg.
+
+    let eh = EventHandler::<AlarmEventArgs>::new(move |s, a| {
+        let u = s.as_ref().unwrap();//.unwrap();
+        let sender : Alarm = u.cast()?;
+        let  response3 = sender.SendReceive("Inside an event").unwrap();
+        println!("{:?}", response3);
+        //let a = (Alarm)u.;
+        let arg = a.as_ref().unwrap();
+        println!("Event!: {:?} {:?}", sender, arg.Message());
+        Ok(())
+    });
+
+    // let eh2 = TypedEventHandler::<Alarm, AlarmEventArgs>::new(move |s, a| {
+    //     let u = s.as_ref().unwrap();
+    //     //let a = (Alarm)u.;
+    //     let arg = a.as_ref().unwrap();
+    //     println!("Event!: {:?} {:?}", u, arg.Message());
+    //     Ok(())
+    // });
+
+    let t = alarm.Elapsed(eh);
+    alarm.Start(300, "Hello, Rust")?;
+
+    //alarm.RemoveElapsed(t);
+
+    // let token = 
+    //     alarm.Elapsed(TypedEventHandler::<
+    //         ::windows::Object,
+    //         ::windows::Object,
+    //     >::new( move |s, a| {
+    //         Ok(())
+    //     }))?;
+
+    /*
+    let token =
+        webview.NavigationCompleted(TypedEventHandler::<
+            CoreWebView2,
+            CoreWebView2NavigationCompletedEventArgs,
+        >::new(move |_sender, _args| {
+            tx.send(()).expect("send over mpsc channel");
+            Ok(())
+        }))?;
+                
+    */
 
 
     let xml = fs::read_to_string("cd.xml")
