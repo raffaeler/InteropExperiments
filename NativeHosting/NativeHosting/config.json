@@ -6,16 +6,40 @@
 
     "functions": [
         {
+            "name": "ForceFree",
+            "assemblyName": "ManagedDataLibrary",
+            "className": "ManagedDataLibrary.QueryCatalog",
+            "methodName": "ForceFree"
+        },
+        {
             "name": "PrintVoid",
             "assemblyName": "ManagedDataLibrary",
             "className": "ManagedDataLibrary.SimpleClass",
             "methodName": "Print"
         },
         {
+            "name": "MakeQuerySingleRawPtr",
+            "assemblyName": "ManagedDataLibrary",
+            "className": "ManagedDataLibrary.QueryCatalog",
+            "methodName": "MakeQuerySingleRawPtr"
+        },
+        {
             "name": "MakeQuerySingle",
             "assemblyName": "ManagedDataLibrary",
             "className": "ManagedDataLibrary.QueryCatalog",
-            "methodName": "MakeQuery"
+            "methodName": "MakeQuerySingle"
+        },
+        {
+            "name": "MakeQueryMultiRawPtr",
+            "assemblyName": "ManagedDataLibrary",
+            "className": "ManagedDataLibrary.QueryCatalog",
+            "methodName": "MakeQueryMultiRawPtr"
+        },
+        {
+            "name": "MakeQueryMulti_Wrong",
+            "assemblyName": "ManagedDataLibrary",
+            "className": "ManagedDataLibrary.QueryCatalog",
+            "methodName": "MakeQueryMulti_Wrong"
         }
 
     ]

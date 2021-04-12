@@ -16,6 +16,7 @@
 #include <array>
 #include <filesystem>
 #include <functional>
+#include <thread>
 
 #include "include/xconfig.h"
 #include "include/appcontext.h"
@@ -31,82 +32,161 @@ using namespace raf_coreclr;
 
 // declaration of static members
 std::unique_ptr<appcontext> appcontext::instance;
-std::string appcontext::pubPath;
 
-void invokePrint(const xfunction& func)
+
+//void ForceFree()
+//{
+//    auto cfg = xconfig::load("config.json", true);
+//    auto funcs = cfg.getFunctions();
+//    auto func = funcs["ForceFree"];
+//
+//    auto context = appcontext::getInstance();
+//    auto clr = context->clr;
+//    using queryPrototype = void();
+//    auto queryDelegate = (queryPrototype*)clr->CreateDelegate(func.assemblyName, func.className, func.methodName);
+//    queryDelegate();
+//}
+
+void invokePrint(const string& funcName)
 {
-	auto context = appcontext::getInstance();
-	auto clr = context->clr;
+    auto context = appcontext::getInstance();
+    auto clr = context->clr;
+    auto func = context->functions[funcName];
 
-	using printPrototype = void(const char*);
-	auto printDelegate = (printPrototype*)clr->CreateDelegate(func.assemblyName, func.className, func.methodName);
-	printDelegate("Hello, world!");
+    using printPrototype = void(const char*);
+    auto printDelegate = (printPrototype*)clr->CreateDelegate(func.assemblyName, func.className, func.methodName);
+    printDelegate("Hello, world!");
 }
 
 
-void invokeQuery(const xfunction& func, const string& xml,
-	const string& predicateField, const string& predicateValue, const string& returnField,
-	std::function<void(std::string)> resultFunc)
+std::string invokeQuery(const string& funcName, const string& xml,
+    const string& predicateField, const string& predicateValue, const string& returnField)
 {
-	auto context = appcontext::getInstance();
-	auto clr = context->clr;
+    auto context = appcontext::getInstance();
+    auto clr = context->clr;
+    auto func = context->functions[funcName];
 
-	using queryPrototype = char*(const char*, const char*, const char*, const char*);
-	auto queryDelegate = (queryPrototype*)clr->CreateDelegate(func.assemblyName, func.className, func.methodName);
+    using queryPrototype = char* (const char*, const char*, const char*, const char*);
+    auto queryDelegate = (queryPrototype*)clr->CreateDelegate(func.assemblyName, func.className, func.methodName);
 
-	char* pRes = queryDelegate(xml.c_str(), predicateField.c_str(), predicateValue.c_str(), returnField.c_str());
-	resultFunc(pRes);
+    char* pRes = queryDelegate(xml.c_str(), predicateField.c_str(), predicateValue.c_str(), returnField.c_str());
+    std::string result(pRes);
 
-	// free the allocation
-	XUtilities::marshalFree(pRes);
+    XUtilities::marshalFree(pRes);
+    return result;
+}
+
+std::vector<std::string> invokeQueryMultiRawPtr(const string& funcName, const string& xml,
+    const string& predicateField, const string& predicateValue, const string& returnField)
+{
+    auto context = appcontext::getInstance();
+    auto clr = context->clr;
+    auto func = context->functions[funcName];
+
+    using queryPrototype = void* (const char*, const char*, const char*, const char*, int*);
+    auto queryDelegate = (queryPrototype*)clr->CreateDelegate(func.assemblyName, func.className, func.methodName);
+
+    int items;
+    void* result = queryDelegate(xml.c_str(), predicateField.c_str(), predicateValue.c_str(), returnField.c_str(), &items);
+
+    std::vector<string> vec;
+    int p = 0;
+    for (int i = 0; i < items; i++)
+    {
+        char* str = (char*)result + p;
+        std::string temp(str);
+        vec.push_back(temp);
+        p += temp.size() + 1;
+    }
+
+    XUtilities::marshalFree(result);
+    return vec;
+}
+
+// This works but it may have flaws. See the comments inside the .NET project
+std::vector<std::string> invokeQueryMulti(const string& funcName, const string& xml,
+    const string& predicateField, const string& predicateValue, const string& returnField)
+{
+    auto context = appcontext::getInstance();
+    auto clr = context->clr;
+    auto func = context->functions[funcName];
+
+    using queryPrototype = void(const char*, const char*, const char*, const char*, char**, int*);
+    auto queryDelegate = (queryPrototype*)clr->CreateDelegate(func.assemblyName, func.className, func.methodName);
+
+    int items;
+    char* result;
+    queryDelegate(xml.c_str(), predicateField.c_str(), predicateValue.c_str(), returnField.c_str(), &result, &items);
+
+    std::vector<string> vec;
+    int p = 0;
+    for (int i = 0; i < items; i++)
+    {
+        char* str = *((char**)result + p);
+        std::string temp(str);
+        vec.push_back(temp);
+        p++;
+
+        XUtilities::marshalFree(str);
+    }
+
+    XUtilities::marshalFree(result);
+    return vec;
 }
 
 int main()
 {
-	auto sep = std::filesystem::path::preferred_separator;
-
-	auto cfg = xconfig::load("config.json", true);
-	auto pubPath = XFilesystem::make_absolutepath(cfg.get("publishPath"));
-	auto libraryFile = cfg.get("libraryFile");
-
-	std::cout << "Executable          : " << XFilesystem::getExecutable() << endl;
-	std::cout << "Executable Directory: " << XFilesystem::getExecutableAsString() << endl;
-
-	std::cout << "Current Directory:    " << current_path() << std::endl;
-	std::cout << "Publishing Directory: " << pubPath << endl;
-	std::cout << endl;
-	//std::cout << "=== config ===" << std::endl;
-	//cfg.print();
-	//std::cout << "==============" << std::endl;
-
-	auto funcs = cfg.getFunctions();
-
-	appcontext::initialize(pubPath);
-	auto context = appcontext::getInstance();
-	auto clr = context->clr;
-
-	try
-	{
-		std::vector<std::string> trustedAssemblies;
-		trustedAssemblies.push_back(pubPath);
-		clr->CreateAppDomain(libraryFile, trustedAssemblies);
-		invokePrint(funcs["PrintVoid"]);
+    auto sep = std::filesystem::path::preferred_separator;
 
 
-		auto xml = XFilesystem::load_text("cd.xml", true);
+    auto context = appcontext::getInstance();
+    context->initialize("config.json");
+    context->printConfiguration();
+    auto funcs = context->functions;
 
-		invokeQuery(funcs["MakeQuerySingle"], xml, "year", "1987", "title", [](const string& result)
-			{
-				cout << ".NET Query result is \"" << result << "\"" << endl;
-			});
-	}
-	catch (const runtime_error& err)
-	{
-		auto msg = "Error creating the CLR and/or invoking the .NET Code"s + std::string(err.what());
-	}
+    auto clr = context->clr;
 
-	cin.get();
+    try
+    {
+        std::vector<std::string> trustedAssemblies;
+        trustedAssemblies.push_back(context->publishingPath);
+        clr->CreateAppDomain(context->libraryFile, trustedAssemblies);
+        invokePrint("PrintVoid");
 
-	context->free();
-	return 0;
+
+        auto xml = XFilesystem::load_text("cd.xml", true);
+        std::string singleResult;
+        std::vector<std::string> vec;
+
+        cout << endl << "MakeQuerySingleRawPtr" << endl;
+        singleResult = invokeQuery("MakeQuerySingleRawPtr", xml, "year", "1987", "title");
+        cout << ".NET Query result is \"" << singleResult << "\"" << endl;
+
+        cout << endl << "MakeQuerySingle" << endl;
+        singleResult = invokeQuery("MakeQuerySingle", xml, "year", "1987", "title");
+        cout << ".NET Query result is \"" << singleResult << "\"" << endl;
+
+        cout << endl << "MakeQueryMultiRawPtr" << endl;
+        vec = invokeQueryMultiRawPtr("MakeQueryMultiRawPtr", xml, "year", "1987", "title");
+        for (const auto& result : vec)
+        {
+            cout << ".NET Query result is \"" << result << "\"" << endl;
+        };
+
+        cout << endl << "MakeQueryMulti_Wrong" << endl;
+        vec = invokeQueryMulti("MakeQueryMulti_Wrong", xml, "year", "1987", "title");
+        for (const auto& result : vec)
+        {
+            cout << ".NET Query result is \"" << result << "\"" << endl;
+        };
+    }
+    catch (const runtime_error& err)
+    {
+        auto msg = "Error creating the CLR and/or invoking the .NET Code"s + std::string(err.what());
+    }
+
+    cin.get();
+
+    context->free();
+    return 0;
 }

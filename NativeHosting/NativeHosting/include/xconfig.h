@@ -33,6 +33,7 @@ namespace raf_tools
 		json _root;
 
 	public:
+		//xconfig(xconfig&&) = default;
 		explicit xconfig()
 		{
 		}
@@ -41,9 +42,8 @@ namespace raf_tools
 		{
 		}
 
-		static xconfig load(const std::string& filename, bool locateInExeDirectory)
+		void load(const std::string& filename, bool locateInExeDirectory)
 		{
-			xconfig cfg;
 			std::filesystem::path full;
 
 			if (locateInExeDirectory)
@@ -56,9 +56,7 @@ namespace raf_tools
 			}
 
 			std::ifstream stream(full);
-			stream >> cfg._root;
-
-			return cfg;
+			stream >> _root;
 		}
 
 		void save(const std::string& filename)
