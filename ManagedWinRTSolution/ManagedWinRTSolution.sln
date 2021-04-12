@@ -7,7 +7,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinNativeUtilities", "WinNa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinNativeUtilitiesProjection", "WinNativeUtilitiesProjection\WinNativeUtilitiesProjection.csproj", "{65FD9486-F55D-489B-BD3E-3CB7B05E77E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagedClient", "ManagedClient\ManagedClient.csproj", "{9D36D584-9E24-4BDF-B403-FC80AF21F42B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManagedClient", "ManagedClient\ManagedClient.csproj", "{9D36D584-9E24-4BDF-B403-FC80AF21F42B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CppClient", "CppClient\CppClient.vcxproj", "{DF950ACB-995A-4769-B767-97938B66441E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,10 +79,24 @@ Global
 		{9D36D584-9E24-4BDF-B403-FC80AF21F42B}.Release|ARM.Build.0 = Release|Any CPU
 		{9D36D584-9E24-4BDF-B403-FC80AF21F42B}.Release|ARM64.ActiveCfg = Release|Any CPU
 		{9D36D584-9E24-4BDF-B403-FC80AF21F42B}.Release|ARM64.Build.0 = Release|Any CPU
-		{9D36D584-9E24-4BDF-B403-FC80AF21F42B}.Release|x64.ActiveCfg = Release|Any CPU
-		{9D36D584-9E24-4BDF-B403-FC80AF21F42B}.Release|x64.Build.0 = Release|Any CPU
+		{9D36D584-9E24-4BDF-B403-FC80AF21F42B}.Release|x64.ActiveCfg = Release|x64
+		{9D36D584-9E24-4BDF-B403-FC80AF21F42B}.Release|x64.Build.0 = Release|x64
 		{9D36D584-9E24-4BDF-B403-FC80AF21F42B}.Release|x86.ActiveCfg = Release|Any CPU
 		{9D36D584-9E24-4BDF-B403-FC80AF21F42B}.Release|x86.Build.0 = Release|Any CPU
+		{DF950ACB-995A-4769-B767-97938B66441E}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{DF950ACB-995A-4769-B767-97938B66441E}.Debug|ARM.ActiveCfg = Debug|Win32
+		{DF950ACB-995A-4769-B767-97938B66441E}.Debug|ARM64.ActiveCfg = Debug|Win32
+		{DF950ACB-995A-4769-B767-97938B66441E}.Debug|x64.ActiveCfg = Debug|x64
+		{DF950ACB-995A-4769-B767-97938B66441E}.Debug|x64.Build.0 = Debug|x64
+		{DF950ACB-995A-4769-B767-97938B66441E}.Debug|x86.ActiveCfg = Debug|Win32
+		{DF950ACB-995A-4769-B767-97938B66441E}.Debug|x86.Build.0 = Debug|Win32
+		{DF950ACB-995A-4769-B767-97938B66441E}.Release|Any CPU.ActiveCfg = Release|Win32
+		{DF950ACB-995A-4769-B767-97938B66441E}.Release|ARM.ActiveCfg = Release|Win32
+		{DF950ACB-995A-4769-B767-97938B66441E}.Release|ARM64.ActiveCfg = Release|Win32
+		{DF950ACB-995A-4769-B767-97938B66441E}.Release|x64.ActiveCfg = Release|x64
+		{DF950ACB-995A-4769-B767-97938B66441E}.Release|x64.Build.0 = Release|x64
+		{DF950ACB-995A-4769-B767-97938B66441E}.Release|x86.ActiveCfg = Release|Win32
+		{DF950ACB-995A-4769-B767-97938B66441E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

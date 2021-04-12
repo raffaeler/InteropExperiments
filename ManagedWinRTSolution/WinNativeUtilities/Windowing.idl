@@ -1,0 +1,18 @@
+namespace WinNativeUtilities
+{
+    [version(1.0)]
+    struct WindowInfo
+    {
+        Int32 HWnd;
+        String Title;
+        Boolean IsVisible;
+    };
+
+    [default_interface]
+    runtimeclass Windowing
+    {
+        Windowing();
+
+        Windows.Foundation.Collections.IVectorView<WindowInfo> EnumWindows();
+    }
+}

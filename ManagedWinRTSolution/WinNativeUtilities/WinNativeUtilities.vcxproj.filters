@@ -11,14 +11,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="Class.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="Windowing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Windowing.h" />
+    <ClInclude Include="RafUtilities.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="Security.idl" />
+    <Midl Include="Windowing.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="WinNativeUtilities.def" />

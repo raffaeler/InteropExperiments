@@ -118,9 +118,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="RafUtilities.h" />
     <ClInclude Include="Security.h">
       <DependentUpon>Security.idl</DependentUpon>
     </ClInclude>
+    <ClInclude Include="Windowing.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -130,9 +132,11 @@
       <DependentUpon>Security.idl</DependentUpon>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="Windowing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="Security.idl" />
+    <Midl Include="Windowing.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

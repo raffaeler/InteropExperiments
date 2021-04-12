@@ -1,23 +1,10 @@
-========================================================================
-    C++/WinRT WinNativeUtilities Project Overview
-========================================================================
+// Demo by Raffaele Rialdi @raffaeler
+//
+// This project requires the C++/WinRT Visual Studio extension:
+// https://marketplace.visualstudio.com/items?itemName=CppWinRTTeam.cppwinrt101804264
+// 
+// To transform the UWP C++ project into a Desktop C++ project
+// 1. unload the project from VS
+// 2. open the vcxproj and remove <AppContainerApplication>false</AppContainerApplication>
+// 3. save and reload the project
 
-This project demonstrates how to get started authoring Windows Runtime 
-classes directly with standard C++, using the C++/WinRT SDK component 
-to generate implementation headers from interface (IDL) files.  The
-generated Windows Runtime component binary and WinMD files should then
-be bundled with the Universal Windows Platform (UWP) app consuming them.
-
-Steps:
-1. Create an interface (IDL) file to define your Windows Runtime class, 
-    its default interface, and any other interfaces it implements.
-2. Build the project once to generate module.g.cpp, module.h.cpp, and
-    implementation templates under the "Generated Files" folder, as 
-    well as skeleton class definitions under "Generated Files\sources".  
-3. Use the skeleton class definitions for reference to implement your
-    Windows Runtime classes.
-
-========================================================================
-Learn more about C++/WinRT here:
-http://aka.ms/cppwinrt/
-========================================================================

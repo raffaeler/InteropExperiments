@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
@@ -8,8 +8,14 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.VCRTForwarders.140" Version="1.0.7" />
-        <PackageReference Include="WinNativeUtilities_Debug" Version="1.0.411.144231" />
 
     </ItemGroup>
+
+
+    <ItemGroup>
+        <PackageReference Include="BenchmarkDotNet" Version="0.12.1.1527" />
+        <PackageReference Include="WinNativeUtilities" Version="1.0.412.163840" />
+    </ItemGroup>
+
 
 </Project>

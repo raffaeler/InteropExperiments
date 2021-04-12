@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ManagedClient": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
