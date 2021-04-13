@@ -20,9 +20,7 @@
 
 #include "include/xconfig.h"
 #include "include/appcontext.h"
-
 #include "include/Xfilesystem.h"
-
 #include "NativeHosting.h"
 
 using namespace std;
@@ -32,20 +30,6 @@ using namespace raf_coreclr;
 
 // declaration of static members
 std::unique_ptr<appcontext> appcontext::instance;
-
-
-//void ForceFree()
-//{
-//    auto cfg = xconfig::load("config.json", true);
-//    auto funcs = cfg.getFunctions();
-//    auto func = funcs["ForceFree"];
-//
-//    auto context = appcontext::getInstance();
-//    auto clr = context->clr;
-//    using queryPrototype = void();
-//    auto queryDelegate = (queryPrototype*)clr->CreateDelegate(func.assemblyName, func.className, func.methodName);
-//    queryDelegate();
-//}
 
 void invokePrint(const string& funcName)
 {
@@ -90,7 +74,7 @@ std::vector<std::string> invokeQueryMultiRawPtr(const string& funcName, const st
     void* result = queryDelegate(xml.c_str(), predicateField.c_str(), predicateValue.c_str(), returnField.c_str(), &items);
 
     std::vector<string> vec;
-    int p = 0;
+    uint64_t p = 0;
     for (int i = 0; i < items; i++)
     {
         char* str = (char*)result + p;
@@ -136,14 +120,9 @@ std::vector<std::string> invokeQueryMulti(const string& funcName, const string& 
 
 int main()
 {
-    auto sep = std::filesystem::path::preferred_separator;
-
-
     auto context = appcontext::getInstance();
     context->initialize("config.json");
     context->printConfiguration();
-    auto funcs = context->functions;
-
     auto clr = context->clr;
 
     try
@@ -158,26 +137,29 @@ int main()
         std::string singleResult;
         std::vector<std::string> vec;
 
+
         cout << endl << "MakeQuerySingleRawPtr" << endl;
         singleResult = invokeQuery("MakeQuerySingleRawPtr", xml, "year", "1987", "title");
-        cout << ".NET Query result is \"" << singleResult << "\"" << endl;
+        cout << "    \"" << singleResult << "\"" << endl;
+
 
         cout << endl << "MakeQuerySingle" << endl;
         singleResult = invokeQuery("MakeQuerySingle", xml, "year", "1987", "title");
-        cout << ".NET Query result is \"" << singleResult << "\"" << endl;
+        cout << "    \"" << singleResult << "\"" << endl;
+
 
         cout << endl << "MakeQueryMultiRawPtr" << endl;
         vec = invokeQueryMultiRawPtr("MakeQueryMultiRawPtr", xml, "year", "1987", "title");
         for (const auto& result : vec)
         {
-            cout << ".NET Query result is \"" << result << "\"" << endl;
+            cout << "    \"" << result << "\"" << endl;
         };
 
         cout << endl << "MakeQueryMulti_Wrong" << endl;
         vec = invokeQueryMulti("MakeQueryMulti_Wrong", xml, "year", "1987", "title");
         for (const auto& result : vec)
         {
-            cout << ".NET Query result is \"" << result << "\"" << endl;
+            cout << "    \"" << result << "\"" << endl;
         };
     }
     catch (const runtime_error& err)

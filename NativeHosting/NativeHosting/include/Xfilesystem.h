@@ -17,6 +17,8 @@ namespace raf_tools
 
     class XFilesystem
     {
+        //auto sep = std::filesystem::path::preferred_separator;
+
     public:
 
         static std::string make_absolutepath(const std::string& p)
