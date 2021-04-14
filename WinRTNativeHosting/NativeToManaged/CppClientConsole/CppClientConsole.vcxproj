@@ -133,7 +133,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\..\packages\Microsoft.Windows.CppWinRT.2.0.210312.4\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\..\packages\Microsoft.Windows.CppWinRT.2.0.210312.4\build\native\Microsoft.Windows.CppWinRT.targets')" />
-    <Import Project="..\..\packages\ManagedComponent.1.0.408.175927\build\ManagedComponent.targets" Condition="Exists('..\..\packages\ManagedComponent.1.0.408.175927\build\ManagedComponent.targets')" />
+    <Import Project="..\..\packages\ManagedComponent.1.0.414.184538\build\ManagedComponent.targets" Condition="Exists('..\..\packages\ManagedComponent.1.0.414.184538\build\ManagedComponent.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -141,6 +141,6 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\Microsoft.Windows.CppWinRT.2.0.210312.4\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Windows.CppWinRT.2.0.210312.4\build\native\Microsoft.Windows.CppWinRT.props'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.Windows.CppWinRT.2.0.210312.4\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Windows.CppWinRT.2.0.210312.4\build\native\Microsoft.Windows.CppWinRT.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ManagedComponent.1.0.408.175927\build\ManagedComponent.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ManagedComponent.1.0.408.175927\build\ManagedComponent.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ManagedComponent.1.0.414.184538\build\ManagedComponent.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ManagedComponent.1.0.414.184538\build\ManagedComponent.targets'))" />
   </Target>
 </Project>

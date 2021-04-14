@@ -51,7 +51,7 @@ net5.0-windows10.0.19041.0
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-      <Exec Command="@echo &quot;copying artifacts to Rust .windows folders&quot;&#xD;&#xA;xcopy /y $(TargetPath) $(SolutionDir)NativeToManaged\RustClientConsole\.windows\x64&#xD;&#xA;xcopy /y $(TargetDir)WinRT.Host.dll $(SolutionDir)NativeToManaged\RustClientConsole\.windows\x64&#xD;&#xA;xcopy /y $(TargetDir)WinRT.Host.runtimeconfig.json $(SolutionDir)NativeToManaged\RustClientConsole\.windows\x64&#xD;&#xA;xcopy /y $(TargetDir)WinRT.Host.Shim.dll $(SolutionDir)NativeToManaged\RustClientConsole\.windows\x64&#xD;&#xA;xcopy /y $(TargetDir)WinRT.Runtime.dll $(SolutionDir)NativeToManaged\RustClientConsole\.windows\x64&#xD;&#xA;xcopy /y $(TargetDir)$(TargetName).winmd $(SolutionDir)NativeToManaged\RustClientConsole\.windows\winmd" />
+      <Exec Command="@echo &quot;copying artifacts to Rust .windows folders&quot;&#xD;&#xA;xcopy /y $(TargetPath) $(SolutionDir)NativeToManaged\RustClientConsole\.windows\x64\&#xD;&#xA;xcopy /y $(TargetDir)WinRT.Host.dll $(SolutionDir)NativeToManaged\RustClientConsole\.windows\x64\&#xD;&#xA;xcopy /y $(TargetDir)WinRT.Host.runtimeconfig.json $(SolutionDir)NativeToManaged\RustClientConsole\.windows\x64\&#xD;&#xA;xcopy /y $(TargetDir)WinRT.Host.Shim.dll $(SolutionDir)NativeToManaged\RustClientConsole\.windows\x64\&#xD;&#xA;xcopy /y $(TargetDir)WinRT.Runtime.dll $(SolutionDir)NativeToManaged\RustClientConsole\.windows\x64\&#xD;&#xA;xcopy /y $(TargetDir)$(TargetName).winmd $(SolutionDir)NativeToManaged\RustClientConsole\.windows\winmd\" />
     </Target>
 
 </Project>
