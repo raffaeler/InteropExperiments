@@ -14,7 +14,7 @@
 
     <ItemGroup>
         <PackageReference Include="BenchmarkDotNet" Version="0.12.1.1527" />
-        <PackageReference Include="WinNativeUtilities" Version="1.0.412.163840" />
+        <PackageReference Include="WinNativeUtilities_Debug" Version="1.0.414.174914" />
     </ItemGroup>
 
 

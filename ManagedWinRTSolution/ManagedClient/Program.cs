@@ -27,10 +27,10 @@ namespace ManagedClient
                 .OrderBy(w => w.Title)
                 .ToList();
 
-            //foreach (var wininfo in filtered1)
-            //{
-            //    Console.WriteLine(wininfo.Title);
-            //}
+            foreach (var wininfo in filtered1)
+            {
+                Console.WriteLine(wininfo.Title);
+            }
 
 
             var windows2 = EnumWindowsPInvoke.EnumWindows();
@@ -43,20 +43,15 @@ namespace ManagedClient
                 .Select(w => new WindowInfo2(w.HWnd, w.Title, w.IsVisible))
                 .ToList();
 
-            //var diff = filtered1b.Except(filtered2).Union(
-            //    filtered2.Except(filtered1b))
-            //    .ToList();
+            //foreach (var wininfo in filtered1b.Except(filtered2))
+            //{
+            //    Console.WriteLine($"Item in winrt and not in pinvoke: {wininfo.Title}");
+            //}
 
-
-            foreach (var wininfo in filtered1b.Except(filtered2))
-            {
-                Console.WriteLine($"Item in winrt and not in pinvoke: {wininfo.Title}");
-            }
-
-            foreach (var wininfo in filtered2.Except(filtered1b))
-            {
-                Console.WriteLine($"Item in pinvoke but not in winrt: {wininfo.Title}");
-            }
+            //foreach (var wininfo in filtered2.Except(filtered1b))
+            //{
+            //    Console.WriteLine($"Item in pinvoke but not in winrt: {wininfo.Title}");
+            //}
 
 
             return 0;
