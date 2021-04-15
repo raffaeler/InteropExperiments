@@ -1,6 +1,7 @@
-use std::env;
-use std::fs;
-use windows::{Interface, Result};
+use std::{env, fs, thread, time, time::Duration};
+// use std::fs;
+// use std::time::Duration;
+use windows::{Interface};   // , Result
 
 use bindings::{
     ManagedComponent::*,
@@ -73,8 +74,12 @@ fn main() -> windows::Result<()> {
     //     Ok(())
     // });
 
-    let t = alarm.Elapsed(eh);
-    alarm.Start(300, "Hello, Rust")?;
+    let token = alarm.Elapsed(eh)?;
+    let tspan : TimeSpan = Duration::from_millis(200).into();
+    alarm.Start(tspan, "Hello, Rust")?;
+    thread::sleep(time::Duration::from_millis(500));
+
+    alarm.RemoveElapsed(token)?;
 
     //alarm.RemoveElapsed(t);
 
