@@ -45,7 +45,8 @@ namespace ConsumerWPF
             var locator = new Windows.Devices.Geolocation.Geolocator();
             var location = await locator.GetGeopositionAsync();
             var position = location.Coordinate.Point.Position;
-            var latlong = $"lat:{position.Latitude:0.##}, long:{position.Longitude:0.##}";
+            var latlong = $"current latitude is: {position.Latitude:0.#}";
+            //var latlong = $"lat:{position.Latitude:0.##}, long:{position.Longitude:0.##}";
             //var result = MessageBox.Show(latlong); Debug.WriteLine($"Position is {position}");
             txtLocation.Text = $"Position is {latlong}";
         }

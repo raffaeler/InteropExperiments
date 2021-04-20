@@ -2,4 +2,7 @@
 Sleep
 S_OK
 ISpellChecker
-
+EnumWindows
+GetWindowTextLength
+GetWindowText
+IsWindowVisible
