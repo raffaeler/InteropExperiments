@@ -73,7 +73,7 @@ void test_query()
 
 int main()
 {
-    init_apartment();
+    //init_apartment(); // no more needed with the newest releases of cppwinrt
 
     ManagedComponent::Calculator calc;
     std::cout << "calc " << calc.Add(2.0, 3.5) << std::endl;

@@ -9,7 +9,7 @@ edition = "2018"
 # https://crates.io/crates/windows
 
 [dependencies]
-windows = "0.7.0"
+windows = "0.8.0"
 
 [build-dependencies]
-windows = "0.7.0"
+windows = "0.8.0"
