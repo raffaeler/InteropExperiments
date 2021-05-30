@@ -1,0 +1,5 @@
+﻿//CreateFile
+IDesktopWallpaper
+CLSID_DesktopWallpaper
+
+

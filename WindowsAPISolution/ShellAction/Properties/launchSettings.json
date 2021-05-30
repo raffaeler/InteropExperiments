@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ShellAction": {
+      "commandName": "Project",
+      "commandLineArgs": "-desktopwallpaper -time:10000"
+    }
+  }
+}
