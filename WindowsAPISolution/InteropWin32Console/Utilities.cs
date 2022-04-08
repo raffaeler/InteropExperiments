@@ -21,7 +21,7 @@ namespace InteropWin32Console
                 .Select(w => w.title)
                 .ToList();
 
-            unsafe bool WndCallback(HWND hWnd, LPARAM lParam)
+            unsafe BOOL WndCallback(HWND hWnd, LPARAM lParam)
             {
                 Debug.Assert(lParam.Value == 1234);
 
