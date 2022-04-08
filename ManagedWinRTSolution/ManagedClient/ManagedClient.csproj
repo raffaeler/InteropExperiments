@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net5.0-windows10.0.19041.0</TargetFramework>
+        <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
         <Platforms>x64;x86</Platforms>
     </PropertyGroup>
 
@@ -14,7 +14,7 @@
 
     <ItemGroup>
         <PackageReference Include="BenchmarkDotNet" Version="0.12.1.1527" />
-        <PackageReference Include="WinNativeUtilities_Debug" Version="1.0.414.174914" />
+        <PackageReference Include="WinNativeUtilities_Debug" Version="1.0.411.224428" />
     </ItemGroup>
 
 
