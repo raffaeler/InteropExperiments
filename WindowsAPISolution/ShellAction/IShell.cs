@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShellAction
+namespace ShellAction;
+
+public interface IShell
 {
-    public interface IShell
-    {
-        bool CanHandle(string[] args);
+    bool CanHandle(string[] args);
 
-        bool ExecuteAction(string[] args);
+    bool ExecuteAction(string[] args);
 
-        string ShowUsage();
-    }
+    string ShowUsage();
 }
